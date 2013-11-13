@@ -15,7 +15,7 @@ Encrypted Backups to S3 for GitHub Enterprise.
 1. Setup SSH access on your GHE server
 2. Create a PGP key to use for backups
 3. (Optional) Configure an AWS S3 user and bucket
-4. (Optional) Install and Configure aws-cli
+4. (Optional) Install and configure aws-cli
 5. Configure `ghe-backup` variables
 
 #### Github Enterprise SSH Access
