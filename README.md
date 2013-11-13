@@ -63,4 +63,4 @@ Set the appropriate `SERVER`, the `BACKUPS_DIR` you want to use, name or email o
 
 ### More info
 
-See the [GitHub Enterprise documentation](https://enterprise.github.com/help/articles/backing-up-your-installation) for more info about backing up and restoring your installation.
+See the [GitHub Enterprise documentation](https://enterprise.github.com/help/articles/backing-up-your-installation) for more info about backing up and restoring your installation. Add it to cron to run as often as you would like.
