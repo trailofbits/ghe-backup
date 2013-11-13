@@ -1,7 +1,7 @@
 ghe-backup
 ===============================
 
-Encrypted Backups to S3 for GitHub Enterprise Server.
+Encrypted Backups to S3 for GitHub Enterprise.
 
 ### Features
 
