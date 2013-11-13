@@ -7,8 +7,8 @@ Encrypted Backups to S3 for GitHub Enterprise.
 
 * Supports making complete backups from Github Enterprise servers
 * Supports arbitrary backup locations
-* Supports encrypting backups with a local GPG key
-* Supports syncing backup directory with AWS S3 backup
+* Supports encrypting backups with GPG
+* Supports syncing backups to AWS S3
 
 ### Getting Started
 
