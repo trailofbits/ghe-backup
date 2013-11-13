@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+#
+# Authors: James Munn, Hal Brodigan
+# Version: 2.0
+# Summary: Encrypted Backups to S3 for GitHub Enterprise Server.
+#
+
+set -e
+
+#
+# Configuration
+#
+# DNS name or IP address of the Github Enterprise Server
+SERVER="X.X.X.X"
+# Where the backups are stored
+BACKUPS_DIR="$HOME/backups"
+# Name or email of the PGP key to encrypt with
+PGP_RECIPIENT="GitHub Enterprise Backup"
+# Enables S3 backups using awscli (http://aws.amazon.com/cli/)
+S3_BACKUP=false
+# S3 Bucket location for uploads
+S3_BUCKET="s3://your-s3-bucket-name"
+
+CURRENT_DATE="$(date +%Y.%m.%d)"
+ARCHIVE="ghe-backup-${CURRENT_DATE}.tar.gpg"
+DOWNLOAD_DIR="$BACKUPS_DIR/current"
+ARCHIVE_DIR="$BACKUPS_DIR/archive"
+DOWNTIME=35 # in minutes
+
+#
+# Create our backup files
+#
+echo ">>> Entering maintenance mode"
+ssh "admin@$SERVER" "ghe-maintenance -s"
+trap "ssh 'admin@$SERVER' 'ghe-maintenance -u'; exit 130" SIGINT
+
+echo ">>> Exporting GitHub Enterprise backup ..."
+mkdir -p "$DOWNLOAD_DIR"
+cd "$DOWNLOAD_DIR/"
+ssh "admin@$SERVER" "ghe-export-authorized-keys" > ghe-backup-authorized-keys.json
+ssh "admin@$SERVER" "ghe-export-es-indices" > ghe-backup-es-indices.tar
+ssh "admin@$SERVER" "ghe-export-mysql" | gzip > ghe-backup-mysql-backup.sql.gz
+ssh "admin@$SERVER" "ghe-export-redis" > ghe-backup-redis.rdb
+ssh "admin@$SERVER" "ghe-export-repositories" > ghe-backup-repositories-backup.tar
+ssh "admin@$SERVER" "ghe-export-pages" > pages.tar
+ssh "admin@$SERVER" "ghe-export-settings" > ghe-backup-settings.json
+ssh "admin@$SERVER" "ghe-export-ssh-host-keys" > ghe-backup-ssh-host-keys.tar
+sleep "${DOWNTIME}m"
+
+echo ">>> Leaving maintenance mode"
+ssh "admin@$SERVER" "ghe-maintenance -u"
+trap SIGINT
+
+#
+# Package our files by the date
+#
+echo ">>> Packaging and Encrypting files ..."
+mkdir -p "$ARCHIVE_DIR"
+tar cv * | gpg -e -r "$PGP_RECIPIENT" > "$ARCHIVE_DIR/$ARCHIVE"
+rm -f "$DOWNLOAD_DIR"/*
+
+#
+# Backup to Amazon S3
+#
+if $S3_BACKUP; then
+	echo ">>> Uploading to S3 bucket ..."
+	aws s3 sync "$ARCHIVE_DIR" "$S3_BUCKET" --include "*.gpg"
+fi
+
+echo ">>> Complete!"
