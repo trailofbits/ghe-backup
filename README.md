@@ -59,7 +59,7 @@ Create a new S3 bucket via the AWS management console and use an [IAM policy](ht
 
 #### 5. Configure the script
 
-Set the appropriate `SERVER`, the `BACKUPS_DIR` you want to use, name or email of the `PGP_RECIPIENT`, enable or disable `S3_BACKUP` and the `S3_BUCKET` you want to use. Run `ghe-backup` without arguments to begin the backup. Add it to cron to run as often as you would like.
+Set the appropriate `SERVER`, the `BACKUPS_DIR` you want to use, name or email of the `PGP_RECIPIENT`, enable or disable `S3_BACKUP` and the `S3_BUCKET` you want to use. Run `ghe-backup` without arguments to begin the backup. Add it to cron to run as often as you want.
 
 ### More info
 
