@@ -20,7 +20,7 @@ Encrypted Backups to S3 for GitHub Enterprise.
 
 #### Github Enterprise SSH Access
 
-[Enable SSH access](https://enterprise.github.com/help/articles/ssh-access) to the Github Enterprise server through the management console with a public key from your backup server. Restrict access to only your backup server with the `from` option in your SSH public key.
+[Enable SSH access](https://enterprise.github.com/help/articles/ssh-access) to the Github Enterprise server through the management console with a public key from your backup server. Restrict access to only your backup server with the `from` option in your SSH public key. OS X users may want to use [Homebrew](http://brew.sh/) to install GnuPG.
 
 #### GnuPG backup key
 
