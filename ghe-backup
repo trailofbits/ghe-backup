@@ -39,9 +39,9 @@ mkdir -p "$DOWNLOAD_DIR"
 cd "$DOWNLOAD_DIR/"
 ssh "admin@$SERVER" "ghe-export-authorized-keys" > ghe-backup-authorized-keys.json
 ssh "admin@$SERVER" "ghe-export-es-indices" > ghe-backup-es-indices.tar
-ssh "admin@$SERVER" "ghe-export-mysql" | gzip > ghe-backup-mysql-backup.sql.gz
+ssh "admin@$SERVER" "ghe-export-mysql" | gzip > ghe-backup-mysql.sql.gz
 ssh "admin@$SERVER" "ghe-export-redis" > ghe-backup-redis.rdb
-ssh "admin@$SERVER" "ghe-export-repositories" > ghe-backup-repositories-backup.tar
+ssh "admin@$SERVER" "ghe-export-repositories" > ghe-backup-repositories.tar
 ssh "admin@$SERVER" "ghe-export-pages" > pages.tar
 ssh "admin@$SERVER" "ghe-export-settings" > ghe-backup-settings.json
 ssh "admin@$SERVER" "ghe-export-ssh-host-keys" > ghe-backup-ssh-host-keys.tar
