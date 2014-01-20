@@ -32,7 +32,7 @@ DOWNTIME=35 # in minutes
 #
 echo ">>> Entering maintenance mode"
 ssh "admin@$SERVER" "ghe-maintenance -s"
-trap "ssh 'admin@$SERVER' 'ghe-maintenance -u'; exit 130" SIGINT
+trap "ssh 'admin@$SERVER' 'ghe-maintenance -u'; exit 130" EXIT
 
 echo ">>> Exporting GitHub Enterprise backup ..."
 mkdir -p "$DOWNLOAD_DIR"
@@ -49,7 +49,7 @@ sleep "${DOWNTIME}m"
 
 echo ">>> Leaving maintenance mode"
 ssh "admin@$SERVER" "ghe-maintenance -u"
-trap SIGINT
+trap EXIT
 
 #
 # Package our files by the date
